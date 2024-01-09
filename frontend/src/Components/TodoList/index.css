@@ -1,0 +1,49 @@
+/* Todo List */
+* {
+    margin: 0;
+    padding: 0;
+    color: white;
+}
+  
+  .todo-list-section{
+    padding: 1rem 0;
+    margin: 0 5vw;
+    width: 80vw;
+    max-width: 1500px;
+    border: #000000 solid 5px;  
+    background-color: #004643;
+    color: #000000;
+    border-radius: 15px;
+    box-shadow: 5px 5px 0px rgb(0, 0, 0); 
+  }
+  
+  .sort-todos-div {
+    display: flex;
+    flex-direction: column;
+    margin: 0 2rem 1rem 2rem;
+    color: #ffffff;
+    width: 4em;
+    cursor:pointer;
+  
+  }
+
+  .todo-list-listings {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hide-completed-check {
+    margin: 2rem 2rem 0 2rem;
+    width: 10em;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+  }
+
+  .hide-completed-check input {
+
+ margin-left: 0.5em;
+  }

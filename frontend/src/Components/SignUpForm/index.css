@@ -1,0 +1,123 @@
+
+   .sign-up-container {
+    background: #fff;
+    border: #000 solid 2px;
+    box-shadow: 3px 3px 0px rgb(0, 0, 0);
+    padding: 2em;
+    width: 25em;
+    margin-top: 5em;
+  }
+  
+  .sign-up-cta h2 {
+    color: #000;
+    font-size: 1.75rem;
+    text-align: center;
+  }
+  
+  
+  .sign-up-container form {
+    margin: 2em 0;
+  }
+
+  .sign-up-container form a {
+    color: black;
+    font-size: 0.75em;
+    text-decoration: underline;
+    cursor:pointer;
+
+  }
+
+  
+  .sign-up-container .form-row {
+    display: flex;
+    margin: .75em 0;
+    position: relative;
+  }
+  
+  .sign-up-container .form-row > span {
+    background: #fff;
+    color: #000;
+    display: inline-block;
+    font-weight: 400;
+    left: 1em;
+    padding: 0 .5em;
+    position: absolute;
+    pointer-events: none;
+    transform: translateY(-50%);
+    top: 50%;
+    transition: all 300ms ease;
+    user-select: none;
+  }
+  
+  .sign-up-container input,
+  .sign-up-container button {
+    border-radius: .5em;
+    font-family: inherit;
+    padding: 1em .5em;
+    width: 100%;
+  }
+  
+  .sign-up-container input {
+    font-weight: bold;
+    transition: 100ms ease all;
+    width: 100%;
+    color: #000;
+  }
+  
+  .sign-up-container input[type="text"],
+  .sign-up-container input[type="password"] {
+    border: .075em solid #ddd;
+  }
+  
+  .sign-up-container input:valid + span {
+    top: 0;
+    font-size: .90rem;
+  }
+  
+  .sign-up-container input:invalid + span {
+    top: 50%;
+  }
+  
+  .sign-up-container input:focus + span {
+    top: 0;
+  }
+  
+  .sign-up-container input:required {
+    box-shadow: none;
+  }
+  
+  .sign-up-container input:focus {
+    border-color: #f9bc60;
+    outline: none;
+  }
+  
+  .sign-up-container input:focus:invalid {
+    box-shadow: none;
+    top: 50%;
+  }
+  
+  .sign-up-container input:focus:valid {
+    top: 0;
+  }
+  
+  .btn-sign-up-form {
+    background-color: #f9bc60;
+    border: .20em solid #000;
+    color: #000;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 300ms ease;
+    background-color: #f9bc60;
+    padding: 10px;
+    box-shadow: 3px 3px 0px rgb(0, 0, 0);
+  }
+  
+  .btn-sign-up-form:focus {
+    border: .10em solid darken(#f9bc60, 10);
+    outline: none;
+  }
+  
+  .btn-sign-up-form:hover {
+    filter: saturate(200%)
+
+  }

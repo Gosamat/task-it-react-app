@@ -1,0 +1,96 @@
+.todo-listing {
+    list-style: none;
+    margin: 0.50rem 2rem;
+    width: 85%;
+    border: #000000 solid 5px;  
+    border-radius: 15px;
+    box-shadow: 3px 3px 0px rgb(0, 0, 0);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+    height: 70px;
+    background-color: #ABD1C6;
+    transform: scale(1);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .todo-listing:hover {
+    transform: scale(1.05);
+  }
+  
+  .todo-item-container-left{
+    display: grid;
+    place-content: center;
+    justify-content: space-between;
+    font-size: 20px;
+  }
+
+  .todo-item-container-left label{
+    display: grid;
+    grid-template-columns: 1em auto;
+    gap: 0.5em;
+    color: #000000;
+
+  }
+
+  .todo-item-container-left label:hover {
+    color: #666666;
+
+
+  }
+
+
+  .todo-item-container-left input {
+    margin-right: 1em;
+    -webkit-appearance: none;
+    appearance: none;
+    font: inherit;
+    color: black;
+    width: 1.15em;
+    height: 1.15em;
+    border: 0.15em solid currentColor;
+    border-radius: 0.15em;
+    display: grid;
+    place-content: center;
+
+  }
+
+  .todo-item-container-left input::before {
+    content: "";
+    width: 0.65em;
+    height: 0.65em;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    transform: scale(0);
+    transform-origin: bottom left;
+    transition: 120ms transform ease-in-out;
+    /* Windows High Contrast Mode */
+    background-color: CanvasText;
+  }
+
+  .todo-item-container-left input:checked::before {
+    transform: scale(1);
+  }
+  
+
+  .btn-edit, .btn-delete {
+    color: #000000;
+    background-color: #f9bc60;
+    padding: 10px;
+    margin: 0 2px;
+    border: #000000 solid 2px;
+    box-shadow: 3px 3px 0px rgb(0, 0, 0);
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .btn:hover {
+    filter: saturate(200%)
+
+
+
+  }
+  
+
+  
