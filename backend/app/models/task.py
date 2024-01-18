@@ -1,6 +1,7 @@
 from app.database import db
 from sqlalchemy.ext.hybrid import hybrid_property
 from cryptography.fernet import Fernet
+import os
 
 class Task(db.Model):
     __tablename__ = 'tasks'
@@ -10,6 +11,9 @@ class Task(db.Model):
     created_at = db.Column(db.Date, nullable=False)
     list_id = db.Column(db.Integer, nullable=False) 
     description_encrypted = db.Column(db.LargeBinary, nullable=False)
+
+
+    task_key = os.getenv("TASK_ENCRYPTION_KEY")
 
     def __init__(self, description, created_at, list_id):
         self.created_at = created_at
@@ -33,13 +37,10 @@ class Task(db.Model):
 
     @staticmethod
     def encrypt_description(description):
-        #test key, will change before going into production, just testing out how it works
-        key = Fernet.generate_key()
-        cipher_suite = Fernet(key)
+        cipher_suite = Fernet(Task.task_key)
         return cipher_suite.encrypt(description.encode())
 
     @staticmethod
     def decrypt_description(encrypted_description):
-        key = Fernet.generate_key() 
-        cipher_suite = Fernet(key)
+        cipher_suite = Fernet(Task.task_key)
         return cipher_suite.decrypt(encrypted_description).decode()

@@ -1,47 +1,24 @@
 from flask import Blueprint, jsonify, request
-from .database import db
-from .models.task import Task
-from .models.user import User
-from .models.task_list import Task_List
+from ..database import db
+from ..models.task import Task
+from ..models.user import User
+from ..models.task_list import Task_List
 from datetime import date
+from flask_jwt_extended import jwt_required, get_jwt_identity, JWTManager
 
-api = Blueprint('api', __name__)
-
-
-
-##USERS
-# Route to create a user
-@api.route('/users', methods=['POST'])
-def create_user():
-    username = request.form.get('username')
-
-    if not username:
-        return jsonify(error='Username is required'), 400
-
-    try:
-        new_user = User(username=username, created_at=date.today())  # Assuming you have a 'created_at' field in your User model
-        new_user.register_user_if_not_exist()  # Assuming you have a register_user_if_not_exist method in your User model
-        return jsonify(message='User created successfully'), 201
-    except Exception as e:
-        return jsonify(error=str(e)), 400
-    
-# Route to get all users
-@api.route('/users', methods=['GET'])
-def get_all_users():
-    users = User.query.all()
-    user_list = [user.to_dict() for user in users]
-    return jsonify({"users": user_list})
-
+api = Blueprint('tasks_api', __name__)
 
 # Route to retrieve a user's task lists and their items
-@api.route('/users/<int:user_id>/task-lists', methods=['GET'])
-def get_user_task_lists(user_id):
-    user = User.query.get(user_id)
+@api.route('/users/task-lists', methods=['GET'])
+@jwt_required()
+def get_user_task_lists():
+    current_user = get_jwt_identity()
+    user = User.query.filter_by(username=current_user).first()    
 
     if not user:
-        return jsonify(error=f'User with ID {user_id} not found'), 404
+        return jsonify(error=f'User with ID {user.id} not found'), 404
 
-    task_lists = Task_List.query.filter_by(user_id=user_id).all()
+    task_lists = Task_List.query.filter_by(user_id=user.id).all()
     user_task_lists = []
 
     for task_list in task_lists:
