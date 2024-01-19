@@ -80,7 +80,7 @@ def delete_user():
 
 ##Internal test Routes
 #Get all users
-@api.route('/users', methods=['GET'])
+@api.route('/', methods=['GET'])
 def get_all_users():
     users = User.query.all()
     user_list = [user.to_dict() for user in users]
