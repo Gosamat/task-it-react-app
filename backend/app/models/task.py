@@ -12,6 +12,7 @@ class Task(db.Model):
     description_encrypted = db.Column(db.LargeBinary, nullable=False)
 
 
+    fernet_key = Fernet.generate_key()
 
     def __init__(self, description, created_at, list_id):
         self.created_at = created_at
@@ -35,12 +36,14 @@ class Task(db.Model):
 
     @staticmethod
     def encrypt_description(description):
-        task_key = os.getenv("TASK_ENCRYPTION_KEY")
-        cipher_suite = Fernet(task_key)
+        #task_key = os.getenv("TASK_ENCRYPTION_KEY")
+        print(Task.fernet_key)
+        cipher_suite = Fernet(Task.fernet_key)
+        print(cipher_suite)
         return cipher_suite.encrypt(description.encode())
 
     @staticmethod
     def decrypt_description(encrypted_description):
         task_key = os.getenv("TASK_ENCRYPTION_KEY")
-        cipher_suite = Fernet(task_key)
+        cipher_suite = Fernet(Task.fernet_key)
         return cipher_suite.decrypt(encrypted_description).decode()
