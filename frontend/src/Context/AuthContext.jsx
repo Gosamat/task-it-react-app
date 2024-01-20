@@ -1,102 +1,89 @@
-import React from "react";
-import { createContext, useState, useEffect} from "react";
+import {useState, useEffect, createContext} from "react";
+import axios from 'axios';
 
-   export const AuthDispatchContext = createContext();
-   export const AuthStateContext = createContext();
+const API_URL = 'http://127.0.0.1:5000/api';
+const AuthContext = createContext();
 
+function AuthProviderWrapper(props){
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState(null);
 
+  function storeToken(token){
+    localStorage.setItem("authToken", token);
+  }
 
-   export function AuthProvider({ children }) {
+  /* const authenticateUser =() =>{
+    const storedToken = localStorage.getItem('authToken');
 
-      //default value of storedUser will be null if no data is found in localStorage
-      // This is simply to make a mock authentication, in real scenarios, we would use backend and external services like firebase to assist in Auth
-     const [storedUser, setStoredUser] = useState(() => {
-        const localValue = localStorage.getItem("USER");
-        if (localValue === null) return null;
-    
-        return JSON.parse(localValue);
+    if(storedToken){
+      axios
+      .get(`${API_URL}/auth/verify`, {
+        headers: {Authorization: `Bearer ${storedToken}`},
+      })
+      .then((res)=>{
+        const user = res.data;
+        setIsLoggedIn(true);
+        setUser(user);
+        setIsLoading(false);
+      })
+      .catch(()=>{
+        setIsLoggedIn(false);
+        setUser(null);
+        setIsLoading(false);
       });
-
-      //variable to check if any current form should be displayed. Options are "login", "sign up", "profile" and "". In real scenarios, would use something like react-router-dom and pages to display auth screens and restrict users from using other screens, e.g not be able to access sign up if already logged-in.
-     const [currentForm, setCurrentForm] = useState("");
-
-     //States for user details
-     const [username, setUsername] =useState("");
-     const [pass, setPass] =useState("");
-
-     //State for the current logged in User
-     const [loggedUser, setLoggedUser] =useState(null);
-
-
-      //hook to update user in localstorage when any change occurs to it
-  useEffect(() => {
-    localStorage.setItem("USER", JSON.stringify(storedUser));
-  }, [storedUser]);
-
-     const login = (username, password) => {
-
-
-       if(username === storedUser.username && password=== storedUser.password){
-        setUsername("");
-        setPass("");
-        setLoggedUser(storedUser);
-        setCurrentForm("");
-
-       }
-     };
-
-     const signUp = (username, password) => {
-        
-       if( username!=="" && password!== ""){
-
-        setStoredUser({
-            username, password
+    } else {
+      setIsLoggedIn(false);
+      setUser(null);
+      setIsLoading(false);
+    }
+  };
+ */
+  const authenticateUser = () => {
+    const storedToken = localStorage.getItem('authToken');
+    if (storedToken) {
+      axios
+        .get(`${API_URL}/users/userinfo`, {
+          headers: { Authorization: `Bearer ${storedToken}` },
+        })
+        .then((res) => {
+          const user = res.data;
+          setIsLoggedIn(true);
+          setUser(user);
+          setIsLoading(false);
+        })
+        .catch(() => {
+          setIsLoggedIn(false);
+          setUser(null);
+          setIsLoading(false);
         });
-        setUsername("");
-        setPass("");
-        setCurrentForm("login");
-       }
+    } else {
+      setIsLoggedIn(false);
+      setUser(null);
+      setIsLoading(false);
+    }
+  };
+  
 
-     };
+  useEffect(()=>{
+    authenticateUser();
+  }, []);
 
-     const updateUser =(username)=>{
+  const removeToken = ()=>{
+    localStorage.removeItem("authToken");
+  }
 
-      if(username!==""){
+  const logOutUser= ()=>{
+    removeToken();
+    authenticateUser();
+  }
 
-        setStoredUser({
-          username: username, 
-          password:storedUser.password
-        });
-        setLoggedUser({
-          username: username, 
-          password:storedUser.password
-        });
-        setUsername("");
-        
-      }
+  return (
+    <AuthContext.Provider value={{ isLoggedIn, isLoading, user,API_URL, storeToken, authenticateUser, removeToken, logOutUser}}>
+      {props.children}
+    </AuthContext.Provider>
+  );
 
+}
 
-     }
-
-     const checkLoggedStatus =() =>{
-
-      if(loggedUser){
-        setCurrentForm("profile")
-      }
-      else{
-        setCurrentForm("login")
-      }
-     }
-
-     const logout = () => {
-       setLoggedUser(null);
-     };
-
-     return (
-       <AuthDispatchContext.Provider value={{setCurrentForm, signUp, setUsername, setPass, logout, login, updateUser, checkLoggedStatus}}>
-       <AuthStateContext.Provider value ={{loggedUser, username, pass, currentForm}}>
-         {children}
-         </AuthStateContext.Provider>
-       </AuthDispatchContext.Provider>
-     );
-   }
+export {AuthProviderWrapper, AuthContext};

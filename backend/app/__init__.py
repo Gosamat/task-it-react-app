@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from app.database import db
 from flask_jwt_extended import JWTManager
 from dotenv import load_dotenv
+from flask_cors import CORS
 
 load_dotenv()
 
@@ -11,6 +12,7 @@ def create_app():
 
     try:
         app = Flask(__name__)
+        CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
 
         app.config.from_mapping(
         SECRET_KEY = "My_Secret_Key"

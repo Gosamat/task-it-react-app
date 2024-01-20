@@ -1,19 +1,33 @@
 import React, { useContext, useState } from "react";
+import { AuthContext } from "../../Context/AuthContext";
+import axios from 'axios'
 import "./index.css";
-import {
-  AuthDispatchContext,
-  AuthStateContext,
-} from "../../Context/AuthContext";
+
 
 export function LoginForm() {
-  const { username, pass } = useContext(AuthStateContext);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const {storeToken, authenticateUser, API_URL} = useContext(AuthContext);
+  const [errorMessage, setErrorMessage] = useState(undefined);
 
-  const { setUsername, setPass, login, setCurrentForm } =
-    useContext(AuthDispatchContext);
 
+
+  
   const handleSubmit = (e) => {
     e.preventDefault();
-    login(username, pass);
+    const requestBody = {
+      username,
+      password
+    };
+    axios.post(`${API_URL}/users/login`, requestBody)
+    .then((response) => {
+        storeToken(response.data.access_token);
+        authenticateUser();
+      }).catch((error) => {
+        const errorDescription =  error
+        setErrorMessage(errorDescription);
+      })
+
   };
 
   return (
@@ -34,8 +48,8 @@ export function LoginForm() {
         <div className="form-row">
           <input
             type="password"
-            value={pass}
-            onChange={(e) => setPass(e.target.value)}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
           <span>Password</span>
@@ -49,7 +63,6 @@ export function LoginForm() {
             Login to your Account!
           </button>
         </div>
-        <a onClick={() => setCurrentForm("sign up")}>Don't have an account?</a>
       </form>
     </div>
   );

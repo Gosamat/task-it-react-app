@@ -35,8 +35,10 @@ def create_user():
 #Login a user
 @api.route('/login', methods=['POST'])
 def login():
-    username = request.form.get('username')
-    password = request.form.get('password')
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+    print(username, password)
 
     if not username or not password:
         return jsonify(error='Username and password are both required'), 400
@@ -76,6 +78,18 @@ def delete_user():
 
     except Exception as e:
         return jsonify(error=str(e)), 500
+    
+# Route to get user information from the token
+@api.route('/userinfo', methods=['GET'])
+@jwt_required()
+def get_user_info():
+    current_user = get_jwt_identity()
+    user = User.get_by_username(current_user)
+    if user:
+        return jsonify(user.to_dict()), 200
+    else:
+        return jsonify(error='User not found'), 404
+
 
 
 ##Internal test Routes

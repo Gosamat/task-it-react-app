@@ -1,23 +1,17 @@
 import React, { useContext } from "react";
-import {
-  AuthDispatchContext,
-  AuthStateContext,
-} from "../../Context/AuthContext";
+
 import "./index.css";
 
 export function ProfileForm() {
-  const { setUsername, updateUser } = useContext(AuthDispatchContext);
-  const { loggedUser, username } = useContext(AuthStateContext);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateUser(username);
   };
 
   return (
     <div className="profile-container">
       <header className="profile-header">
-        <h2>{loggedUser.username}'s Profile</h2>
       </header>
       <div className="profile-description">
         <h4>Description</h4>
@@ -31,8 +25,8 @@ export function ProfileForm() {
         <div className="form-row">
           <input
             type="text"
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder={loggedUser.username}
+            //onChange={(e) => setUsername(e.target.value)}
+            //placeholder={loggedUser.username}
           />
           <span>Change Username?</span>
         </div>
