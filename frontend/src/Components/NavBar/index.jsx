@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import "./index.css";
 import { AuthContext } from "../../Context/AuthContext";
+import { Link } from "react-router-dom";
 
 export function NavBar() {
   const { isLoggedIn, user, logOutUser } = useContext(AuthContext);
@@ -9,16 +10,24 @@ export function NavBar() {
     <nav>
       <ul>
         <li>
-          <h3>  {user ? user.username : "no user found"}</h3>
+          <h3>  {user ? user.Username : "no user found"}</h3>
         </li>
-        <li className="nav-bar-options-container">
-            To-do List
-            Profile
-        </li>
+        {user ?
+        <li>
+        <Link to="/tasks">
+        <h3>Task Lists</h3>
+        </Link>
+        </li>: ""}
+        {user ?
+        <li>
+        <Link to="/profile">
+        <h3>Profile</h3>
+        </Link>
+        </li>: ""}
         <li>
           {isLoggedIn ? (
             <>
-              <p>{user.username}</p>
+              <p>{user.Username}</p>
 
               <button className="btn-auth" onClick={() => logOutUser()}>
                 Logout

@@ -18,24 +18,10 @@ export function TodoList() {
   const { sortBy, filteredTodos } = useContext(TodosStateContext);
   const [tasks, setTasks] = useState([]);
 
-  useEffect(() => {
-    // Fetch tasks when the component mounts
-    fetchTasks();
-  }, []);
-
-  const fetchTasks = async () => {
-    try {
-      const response = await axios.get('http://your-backend-api/tasks');
-      setTasks(response.data);
-    } catch (error) {
-      console.error('Error fetching tasks:', error);
-    }
-  };
 
   const createTask = async (description) => {
     try {
       await axios.post('http://your-backend-api/tasks', { description });
-      fetchTasks(); // Refresh the task list after creating a new task
     } catch (error) {
       console.error('Error creating task:', error);
     }
@@ -44,7 +30,6 @@ export function TodoList() {
   const deleteTask = async (taskId) => {
     try {
       await axios.delete(`http://your-backend-api/tasks/${taskId}`);
-      fetchTasks(); // Refresh the task list after deleting a task
     } catch (error) {
       console.error('Error deleting task:', error);
     }

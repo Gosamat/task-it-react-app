@@ -12,8 +12,8 @@ def create_app():
 
     try:
         app = Flask(__name__)
-        CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
-
+        CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})     
+           
         app.config.from_mapping(
         SECRET_KEY = "My_Secret_Key"
          )  
